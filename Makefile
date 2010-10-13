@@ -92,7 +92,7 @@ INSTALL_EXEC := /usr/ucb/$(subst -D,,$(INSTALL_EXEC) )
 endif
 
 ### Add compiler to library directory, but only if not GCC
-DESTDIR_INC      = $(DESTDIR)/include/$(LIB)
+DESTDIR_INC      = $(DESTDIR)/include
 ifeq ($(DESTDIRCOMPILER),gcc)
 DESTDIR_LIB      = $(DESTDIR)/lib
 else
@@ -101,7 +101,7 @@ endif
 
 HEADERS_NOTESTING=$(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) )
 HEADERS_NOTESTING_NOSRC=$(subst src/,,$(HEADERS_NOTESTING) )
-INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/$(LIB)/, $(HEADERS_NOTESTING_NOSRC) )
+INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/, $(HEADERS_NOTESTING_NOSRC) )
 ###############################################################
 
 
@@ -135,7 +135,7 @@ $(DESTDIR_LIB)/lib$(LIB).so: $(build_dir)/lib$(LIB).so
 	######## Done ##############################################
 
 .PHONY: install_headers install_headers_print install_headers_print_done
-ifeq ($(wildcard $(DESTDIR)/include/$(LIB)/*),)
+ifeq ($(wildcard $(INSTALLED_HEADERS)),)
 install_headers_print: install_create_folders
 	############################################################
 	######## Installing library headers to $(DESTDIR_INC)... ###
@@ -147,7 +147,7 @@ install_headers_print:
 install_headers_print_done:
 endif
 install_headers: install_headers_print $(INSTALLED_HEADERS) install_headers_print_done
-$(DESTDIR)/include/$(LIB)/%.$(HEADEXT): src/%.$(HEADEXT)
+$(DESTDIR)/include/%.$(HEADEXT): src/%.$(HEADEXT)
 	$(SUDO) $(INSTALL) $< $@
 
 install_create_folders:
