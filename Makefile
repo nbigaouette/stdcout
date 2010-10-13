@@ -37,11 +37,6 @@ test:
 f:
 	$(MAKE) shared static install $(filter-out f, $(MAKECMDGOALS) )
 
-# TinyXML might report failures under valgrind when compiled with
-# Intel's compiler (optimized or not). To fix this, tell TinyXML
-# to use STL's strings internally.
-CFLAGS          += -DTIXML_USE_STL
-
 .PHONY: shared lib_shared
 shared: lib_shared
 lib_shared: $(build_dir)/lib$(LIB).so
