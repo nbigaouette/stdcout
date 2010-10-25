@@ -64,6 +64,35 @@ void File_And_Screen_Stream::Flush()
 }
 
 // **************************************************************
+void File_And_Screen_Stream::Clear_Format()
+{
+//     std::cout  << std::resetiosflags(std::ios_base::width);
+//     filestream << std::resetiosflags(std::ios_base::width);
+
+    //std::cout  << std::resetiosflags(std::ios::precision);
+//     std::cout.unsetf(std::ios_base::precision);
+//     filestream << std::resetiosflags(std::ios_base::precision);
+
+//     std::cout  << std::resetiosflags(); // Fixed? Scientific?
+//     filestream << std::resetiosflags();
+//     std::cout.floatfield = none;
+//     filestream.floatfield = none;
+    std::cout  << std::resetiosflags(std::ios_base::floatfield);
+    filestream << std::resetiosflags(std::ios_base::floatfield);
+
+    std::cout  << std::right;
+    filestream << std::right;
+
+    std::cout  << std::noshowpos;
+    filestream << std::noshowpos;
+
+    std::cout  << std::setfill(' ');
+    filestream << std::setfill(' ');
+
+
+}
+
+// **************************************************************
 void File_And_Screen_Stream::Format(const int width,
                                     const int nb_after_dot,
                                     const char type,
@@ -87,6 +116,8 @@ void File_And_Screen_Stream::Format(const int width,
  *      Format(12, 6, 'g', '+') equivalent to printf("%+12.6g", [...])
  */
 {
+    Clear_Format();
+
     if (width != 0)
     {
         std::cout  << std::setw(width);

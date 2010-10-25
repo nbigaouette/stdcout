@@ -27,6 +27,7 @@ class File_And_Screen_Stream
         void Flush();
 
         void Format(const int width, const int nb_after_dot, const char type, const char justify='r', const char fill=' ');
+        void Clear_Format();
 };
 
 template <class T>
