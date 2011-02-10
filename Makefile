@@ -7,15 +7,15 @@
 # for c in pgi intel gcc 'sun studio12'; do make c $c optimized static shared install; done
 #################################################################
 
-# Pseudo-Random Number Generator library (PRNG)
+# Logging library
 
 # Project options
 LIB             := stdcout
-BIN              = $(LIB)_test
+BIN              = $(LIB)
 SRCDIRS          = src
+TESTDIRS         = unit_testing
 SRCEXT           = cpp
 HEADEXT          = hpp
-HEADERS          = $(wildcard $(addsuffix *.$(HEADEXT),$(addsuffix /, $(SRCDIRS)) ) )
 LANGUAGE         = CPP
 
 # Include the generic rules
@@ -26,11 +26,6 @@ include makefiles/Makefile.rules
 
 LIB_OBJ          = $(OBJ)
 
-test:
-	# HEADERS = $(HEADERS)
-	# SOURCES = $(SOURCES)
-	# OBJ = $(OBJ)
-	# LIB = $(LIB)
 
 ### Just build "full" and install
 .PHONY: f
