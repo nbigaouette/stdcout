@@ -7,15 +7,15 @@
 # for c in pgi intel gcc 'sun studio12'; do make c $c optimized static shared install; done
 #################################################################
 
-# Pseudo-Random Number Generator library (PRNG)
+# Logging library
 
 # Project options
 LIB             := stdcout
-BIN              = $(LIB)_test
+BIN              = $(LIB)
 SRCDIRS          = src
+TESTDIRS         = unit_testing
 SRCEXT           = cpp
 HEADEXT          = hpp
-HEADERS          = $(wildcard $(addsuffix *.$(HEADEXT),$(addsuffix /, $(SRCDIRS)) ) )
 LANGUAGE         = CPP
 
 # Include the generic rules
@@ -26,11 +26,6 @@ include makefiles/Makefile.rules
 
 LIB_OBJ          = $(OBJ)
 
-test:
-	# HEADERS = $(HEADERS)
-	# SOURCES = $(SOURCES)
-	# OBJ = $(OBJ)
-	# LIB = $(LIB)
 
 ### Just build "full" and install
 .PHONY: f
@@ -94,7 +89,7 @@ else
     DESTDIR_LIB := $(DESTDIR)/lib/$(DESTDIRCOMPILER)
 endif
 
-HEADERS_NOTESTING=$(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) )
+HEADERS_NOTESTING=$(filter-out src/Version.hpp, $(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) ) )
 HEADERS_NOTESTING_NOSRC=$(subst src/,,$(HEADERS_NOTESTING) )
 INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/, $(HEADERS_NOTESTING_NOSRC) )
 ###############################################################
@@ -142,7 +137,7 @@ install_headers_print:
 install_headers_print_done:
 endif
 install_headers: install_headers_print $(INSTALLED_HEADERS) install_headers_print_done
-$(DESTDIR)/include/%.$(HEADEXT): src/%.$(HEADEXT)
+$(DESTDIR)/include/%.$(HEADEXT): $(HEADERS_NOTESTING)
 	$(SUDO) $(INSTALL) $< $@
 
 install_create_folders:

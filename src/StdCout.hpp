@@ -8,14 +8,22 @@
 #include <string>
 #include <cstdlib>
 
+#include <cstdio>
+#include <cstdarg>
+
 // #include "Assert.hpp"
 #include <cassert>
+
+void log(const char *const format, ...);
 
 class File_And_Screen_Stream
 {
     public:
         std::ofstream filestream;
+        FILE         *filepointer;
+        char          string_to_log[1000];
 
+         File_And_Screen_Stream(void);
         ~File_And_Screen_Stream(void);
 
         File_And_Screen_Stream & operator<<(std::ostream& (*pfun)(std::ostream&));
@@ -28,6 +36,8 @@ class File_And_Screen_Stream
 
         void Format(const int width, const int nb_after_dot, const char type, const char justify='r', const char fill=' ');
         void Clear_Format();
+
+        friend void log(const char *const format, ...);
 };
 
 template <class T>

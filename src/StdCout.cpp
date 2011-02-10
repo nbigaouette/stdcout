@@ -1,10 +1,42 @@
 
 #include <iomanip>
+#include <cstring>
 
 #include "StdCout.hpp"
+#include "Version.hpp"
 
 File_And_Screen_Stream std_cout;
 
+// **************************************************************
+void log(const char *const format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    /*
+    vprintf(format, args);
+
+    if (std_cout.filepointer != NULL)
+        vfprintf(std_cout.filepointer, format, args);
+    */
+    std_cout.string_to_log[0] = '\0';
+    int result = vsprintf(std_cout.string_to_log, format, args);
+    if (result < 0)
+    {
+        std_cout << "Couldn't save log! Aborting.\n" << std::flush;
+        abort();
+    }
+    std_cout << std_cout.string_to_log;
+
+    va_end(args);
+}
+
+// **************************************************************
+File_And_Screen_Stream::File_And_Screen_Stream(void)
+{
+    // Clear the string
+    memset(string_to_log, 0, 1000*sizeof(char));
+}
 
 // **************************************************************
 File_And_Screen_Stream::~File_And_Screen_Stream(void)
@@ -16,6 +48,10 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
 
     if (filestream.is_open())
         filestream.close();
+
+    if (filepointer != NULL)
+        fclose(filepointer);
+    filepointer = NULL;
 }
 
 // **************************************************************
@@ -41,6 +77,11 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
     else
         filestream.open(filename.c_str(), std::ios_base::out);
     assert(filestream.is_open());
+
+    filepointer = fopen(filename.c_str(), "wa");
+    assert(filepointer != NULL);
+
+    Log_Git_Info();
 }
 
 // **************************************************************
