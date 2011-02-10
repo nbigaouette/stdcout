@@ -10,8 +10,7 @@ extern void log(const char *const format, ...);
 inline void Log_Git_Info()
 {
     log("##############################################################\n");
-    log("# StdCout library initialized.                               #\n");
-    log("# Git versioning:                                            #\n");
+    log("# StdCout library git versioning:                            #\n");
     log("#    build_time:   %-41s #\n", build_time);
     log("#    build_sha:    %-41s #\n", build_sha);
     log("#    build_branch: %-41s #\n", build_branch);
