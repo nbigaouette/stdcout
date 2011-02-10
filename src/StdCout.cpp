@@ -13,12 +13,6 @@ void log(const char *const format, ...)
     va_list args;
     va_start(args, format);
 
-    /*
-    vprintf(format, args);
-
-    if (std_cout.filepointer != NULL)
-        vfprintf(std_cout.filepointer, format, args);
-    */
     std_cout.string_to_log[0] = '\0';
     int result = vsprintf(std_cout.string_to_log, format, args);
     if (result < 0)
@@ -27,8 +21,6 @@ void log(const char *const format, ...)
         abort();
     }
     std_cout << std_cout.string_to_log;
-
-    va_end(args);
 }
 
 // **************************************************************
@@ -71,7 +63,7 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
  * Open file.
  */
 {
-    std::cout << "Opening file " << filename << "...\n";
+    std::cout << "Opening file " << filename << "...\n" << std::flush;
     if (append)
         filestream.open(filename.c_str(), std::ios_base::app);
     else
@@ -80,6 +72,8 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
 
     filepointer = fopen(filename.c_str(), "wa");
     assert(filepointer != NULL);
+
+    filestream << "Opening file " << filename << "...\n" << std::flush;
 
     Log_Git_Info();
 }

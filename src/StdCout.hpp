@@ -40,6 +40,8 @@ class File_And_Screen_Stream
         friend void log(const char *const format, ...);
 };
 
+extern File_And_Screen_Stream std_cout;
+
 template <class T>
 File_And_Screen_Stream & operator<<(File_And_Screen_Stream& st, const T val)
 {
@@ -47,8 +49,6 @@ File_And_Screen_Stream & operator<<(File_And_Screen_Stream& st, const T val)
     std::cout     << val;
     return st;
 }
-
-extern File_And_Screen_Stream std_cout;
 
 // **************************************************************
 template <class T>
