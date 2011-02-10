@@ -89,7 +89,7 @@ else
     DESTDIR_LIB := $(DESTDIR)/lib/$(DESTDIRCOMPILER)
 endif
 
-HEADERS_NOTESTING=$(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) )
+HEADERS_NOTESTING=$(filter-out src/Version.hpp, $(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) ) )
 HEADERS_NOTESTING_NOSRC=$(subst src/,,$(HEADERS_NOTESTING) )
 INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/, $(HEADERS_NOTESTING_NOSRC) )
 ###############################################################
@@ -137,7 +137,7 @@ install_headers_print:
 install_headers_print_done:
 endif
 install_headers: install_headers_print $(INSTALLED_HEADERS) install_headers_print_done
-$(DESTDIR)/include/%.$(HEADEXT): src/%.$(HEADEXT)
+$(DESTDIR)/include/%.$(HEADEXT): $(HEADERS_NOTESTING)
 	$(SUDO) $(INSTALL) $< $@
 
 install_create_folders:

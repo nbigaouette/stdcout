@@ -240,9 +240,9 @@ GIT_BRANCH := $(shell $(GIT) branch --no-color| $(GREP) "*" | $(SED) "s|* ||g")
 version: src/Version.cpp
 src/Version.cpp: force
 	echo "#include \"Version.hpp\"" > src/Version.cpp
-	echo "const char *build_sha = \"`$(GIT) rev-parse HEAD`\";" >> src/Version.cpp
-	echo "const char *build_branch = \"$(GIT_BRANCH)\";" >> src/Version.cpp
-	echo "const char *build_time = \"`date`\";" >> src/Version.cpp
+	echo "const char *$(LIB)_build_sha = \"`$(GIT) rev-parse HEAD`\";" >> src/Version.cpp
+	echo "const char *$(LIB)_build_branch = \"$(GIT_BRANCH)\";" >> src/Version.cpp
+	echo "const char *$(LIB)_build_time = \"`date`\";" >> src/Version.cpp
 # Git revision is saved in src/Version.cpp. Only used for Git.
 
 #################################################################
