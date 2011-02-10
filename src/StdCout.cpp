@@ -84,9 +84,9 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
     log("##############################################################\n");
     log("# StdCout library initialized.                               #\n");
     log("# Git versioning:                                            #\n");
-    log("#    build_time:   %41s #\n", build_time);
-    log("#    build_sha:    %41s #\n", build_sha);
-    log("#    build_branch: %41s #\n", build_branch);
+    log("#    build_time:   %-41s #\n", build_time);
+    log("#    build_sha:    %-41s #\n", build_sha);
+    log("#    build_branch: %-41s #\n", build_branch);
     log("##############################################################\n");
 }
 
