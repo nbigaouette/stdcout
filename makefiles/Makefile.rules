@@ -235,13 +235,14 @@ all: $(BIN)
 o: $(OBJ)
 
 # Git revision is saved in src/Version.cpp. Only used for Git.
-#.PHONE: version
-#version: src/Version.cpp
-#src/Version.cpp: force
-#	echo "#include \"Version.hpp\"" > src/Version.cpp
-#	echo "const char *build_sha = \"`$(GIT) rev-parse HEAD`\";" >> src/Version.cpp
-#	echo "const char *build_branch = \"$(GIT_BRANCH)\";" >> src/Version.cpp
-#	echo "const char *build_time = \"`date`\";" >> src/Version.cpp
+GIT_BRANCH := $(shell $(GIT) branch --no-color| $(GREP) "*" | $(SED) "s|* ||g")
+.PHONE: version
+version: src/Version.cpp
+src/Version.cpp: force
+	echo "#include \"Version.hpp\"" > src/Version.cpp
+	echo "const char *build_sha = \"`$(GIT) rev-parse HEAD`\";" >> src/Version.cpp
+	echo "const char *build_branch = \"$(GIT_BRANCH)\";" >> src/Version.cpp
+	echo "const char *build_time = \"`date`\";" >> src/Version.cpp
 # Git revision is saved in src/Version.cpp. Only used for Git.
 
 #################################################################
@@ -272,7 +273,7 @@ test: testing
 testing: $(BIN)
 
 # Linking
-$(BIN): $(OBJ)
+$(BIN): version $(OBJ)
 	$(LD) $(OBJ) -o $(BIN) $(LDFLAGS)
 
 # Compilation of source files, depends on ALL headers
