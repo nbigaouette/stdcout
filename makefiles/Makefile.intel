@@ -10,7 +10,7 @@ CFLAGS          += -wd1419  # remark #1419: external declaration in primary sour
 CFLAGS          += -wd869   # remark #869: parameter "???" was never referenced
 CFLAGS          += -wd1418  # remark #1418: external function definition with no prior declaration
 CFLAGS          += -wd383   # remark #383: value copied to temporary, reference to temporary used
-
+CFLAGS          += -wd161   # warning #161: unrecognized #pragma
 
 RPATH           := -Wl,-rpath,
 
@@ -28,6 +28,12 @@ ifneq ($(filter optimized, $(MAKECMDGOALS) ),)
     # (-fast includes -ipo)
     #CFLAGS      += -ipo -fast
     #LDFLAGS     += -ipo -fast
+    CFLAGS      += -wd981   # remark #981: operands are evaluated in unspecified order
+    CFLAGS      += -wd1419  # remark #1419: external declaration in primary source file
+    CFLAGS      += -wd869   # remark #869: parameter "???" was never referenced
+    CFLAGS      += -wd1418  # remark #1418: external function definition with no prior
+    CFLAGS      += -wd383   # remark #383: value copied to temporary, reference to temporary used
+    CFLAGS      += -wd161   # warning #161: unrecognized #pragma
 endif
 #################################################################
 # MPI location
@@ -44,16 +50,23 @@ ifeq ($(arch),x86_64)
     LDFLAGS     += -fPIC
 endif
 
-GCC_MAJOR    := $(shell $(CXX) -dumpversion 2>&1 | cut -d'.' -f1)
-GCC_MINOR    := $(shell $(CXX) -dumpversion 2>&1 | cut -d'.' -f2)
-ifeq ($(GCC_MINOR),5)
-    CFLAGS          += -gcc-name=/opt/gcc34/bin/gcc -gxx-name=/opt/gcc34/bin/g++
-endif
-
 #################################################################
 # Flags to build a shared object (library) should be the same
 # as CFLAGS plus -shared
 LIB_OPTIONS     := -shared $(CFLAGS)
+
+ifeq ($(LINK_PREFERED), static)
+LDFLAGS         += -static-intel
+endif
+
+GCC_MAJOR       := $(shell gcc -dumpversion | cut -d'.' -f1)
+GCC_MINOR       := $(shell gcc -dumpversion | cut -d'.' -f2)
+GCC_REV         := $(shell gcc -dumpversion | cut -d'.' -f3)
+ifeq ($(GCC_MAJOR).$(GCC_MINOR),4.5)
+GCC34_LOC       := /opt/gcc34
+CFLAGS += -gcc-name=$(GCC34_LOC)/bin/gcc
+CFLAGS += -gxx-name=$(GCC34_LOC)/bin/g++
+endif
 
 # Detect if compilation for library
 ifneq ($(LIB),)
