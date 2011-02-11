@@ -35,7 +35,7 @@ f:
 .PHONY: shared lib_shared
 shared: lib_shared
 lib_shared: $(build_dir)/lib$(LIB).so
-$(build_dir)/lib$(LIB).so: $(LIB_OBJ)
+$(build_dir)/lib$(LIB).so: version $(LIB_OBJ)
 	############################################################
 	######## Building shared library... ########################
 	#
@@ -45,7 +45,7 @@ $(build_dir)/lib$(LIB).so: $(LIB_OBJ)
 .PHONY: static lib_static
 static: lib_static
 lib_static: $(build_dir)/lib$(LIB).a
-$(build_dir)/lib$(LIB).a: $(LIB_OBJ)
+$(build_dir)/lib$(LIB).a: version $(LIB_OBJ)
 	############################################################
 	######## Building static library... ########################
 	#
