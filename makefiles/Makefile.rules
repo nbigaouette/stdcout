@@ -307,6 +307,11 @@ variables:
 	# TEST_SOURCES:  $(TEST_SOURCES)
 	# TEST_NAMES:    $(TEST_NAMES)
 	# TEST_OBJ:      $(TEST_OBJ)
+	# GCC_MAJOR:     $(GCC_MAJOR)
+	# GCC_MINOR:     $(GCC_MINOR)
+	# GCC_REV:       $(GCC_REV)
+	# GCC_GE_45:     $(GCC_GE_45)
+	# GCC34_LOC:     $(GCC34_LOC)
 
 
 # Clean the project
