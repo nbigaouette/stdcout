@@ -30,6 +30,10 @@ HEADERS          = $(wildcard $(addsuffix *.$(HEADEXT),$(addsuffix /, $(SRCDIRS)
 HPCVL_MACHINES   = sflogin xenakis
 SHARCNET_MACHINES= bul narwhal wha hnd bal
 
+GCC_MAJOR       := $(shell gcc -dumpversion | cut -d'.' -f1)
+GCC_MINOR       := $(shell gcc -dumpversion | cut -d'.' -f2)
+GCC_REV         := $(shell gcc -dumpversion | cut -d'.' -f3)
+
 #################################################################
 # Force printing of help if just "make" is called
 include makefiles/Makefile.help
@@ -303,6 +307,11 @@ variables:
 	# TEST_SOURCES:  $(TEST_SOURCES)
 	# TEST_NAMES:    $(TEST_NAMES)
 	# TEST_OBJ:      $(TEST_OBJ)
+	# GCC_MAJOR:     $(GCC_MAJOR)
+	# GCC_MINOR:     $(GCC_MINOR)
+	# GCC_REV:       $(GCC_REV)
+	# GCC_GE_45:     $(GCC_GE_45)
+	# GCC34_LOC:     $(GCC34_LOC)
 
 
 # Clean the project

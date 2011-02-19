@@ -39,10 +39,6 @@ LDFLAGS         :=
 OMP_CFLAGS       = -fopenmp
 OMP_LDFLAGS      = -fopenmp
 
-GCC_MAJOR       := $(shell gcc -dumpversion | cut -d'.' -f1)
-GCC_MINOR       := $(shell gcc -dumpversion | cut -d'.' -f2)
-GCC_REV         := $(shell gcc -dumpversion | cut -d'.' -f3)
-
 #################################################################
 # Call "make optimized" for optimized compilation
 ifneq ($(filter optimized, $(MAKECMDGOALS) ),)
