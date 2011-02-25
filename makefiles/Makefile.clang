@@ -65,12 +65,6 @@ LIB_OPTIONS     := -shared $(CFLAGS)
 
 CFLAGS          += -DCLANG
 
-GCC_GE_45       := $(shell [ $(GCC_MAJOR) -gt 4 -o \( $(GCC_MAJOR) -eq 4 -a $(GCC_MINOR) -ge 5 \) ] && echo true )
-ifeq ($(GCC_GE_45),true)
-GCC34_LOC       := /opt/gcc34
-CFLAGS          += -nostdinc++ -I$(GCC34_LOC)/include/c++/3.4.6 -I$(GCC34_LOC)/include/c++/3.4.6/x86_64-unknown-linux-gnu
-endif
-
 # Detect if compilation for library
 ifneq ($(LIB),)
 clang: force
