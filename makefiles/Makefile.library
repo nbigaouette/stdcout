@@ -98,8 +98,8 @@ $(DESTDIR_LIB):
 	mkdir -p $(DESTDIR_LIB)
 
 .PHONY: install_static
-install_static: $(DESTDIR_LIB)/lib$(LIB).a $(DESTDIR_LIB)
-$(DESTDIR_LIB)/lib$(LIB).a: $(build_dir)/lib$(LIB).a
+install_static: $(DESTDIR_LIB)/lib$(LIB).a
+$(DESTDIR_LIB)/lib$(LIB).a: $(build_dir)/lib$(LIB).a $(DESTDIR_LIB)
 	############################################################
 	######## Installing static library to $(DESTDIR_LIB)... ####
 	$(SUDO) $(INSTALL) $< $@
@@ -107,8 +107,8 @@ $(DESTDIR_LIB)/lib$(LIB).a: $(build_dir)/lib$(LIB).a
 	######## Done ##############################################
 
 .PHONY: install_shared
-install_shared: $(DESTDIR_LIB)/lib$(LIB).so $(DESTDIR_LIB)
-$(DESTDIR_LIB)/lib$(LIB).so: $(build_dir)/lib$(LIB).so
+install_shared: $(DESTDIR_LIB)/lib$(LIB).so
+$(DESTDIR_LIB)/lib$(LIB).so: $(build_dir)/lib$(LIB).so $(DESTDIR_LIB)
 	############################################################
 	######## Installing shared library to $(DESTDIR_LIB)... ####
 	$(SUDO) $(INSTALL_EXEC) $< $@
