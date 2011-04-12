@@ -20,7 +20,7 @@ CFLAGS          += -pedantic
 CFLAGS          += -Wall -Wextra
 CFLAGS          += -Wformat=2 -Wno-format-extra-args -Wformat-security -Wformat-nonliteral
 CFLAGS          += -Wuninitialized -Winit-self
-CFLAGS          += -Wmissing-include-dirs -Wfloat-equal -Wshadow -Wunsafe-loop-optimizations -Wconversion -Wlogical-op -Winline
+CFLAGS          += -Wmissing-include-dirs -Wfloat-equal -Wshadow -Wunsafe-loop-optimizations -Wconversion -Winline
 # CFLAGS          += -Wpadded
 # CFLAGS          += -Wunreachable-code
 # CFLAGS          += -Weffc++
@@ -81,7 +81,11 @@ endif
 #################################################################
 # Flags to build a shared object (library) should be the same
 # as CFLAGS plus -shared
+ifeq ($(os), Darwin)
+LIB_OPTIONS     := -dynamiclib -undefined dynamic_lookup $(CFLAGS)
+else
 LIB_OPTIONS     := -shared $(CFLAGS)
+endif
 
 # Detect if compilation for library
 ifneq ($(LIB),)
