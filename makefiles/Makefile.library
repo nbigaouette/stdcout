@@ -41,8 +41,8 @@ test_shared: shared $(OBJ) $(TEST_OBJ)
 	######## Done ##############################################
 
 ### Install #####################################################
-INSTALL          = $(GNU)install -m644 -D
-INSTALL_EXEC     = $(GNU)install -m755 -D
+INSTALL          = cp
+INSTALL_EXEC     = cp
 
 DEFAULT_DESTDIR := $(HOME)/usr
 ifeq ($(DESTDIR),)
@@ -92,8 +92,13 @@ endif
 .PHONY: install
 install: $(TO_INSTALL)
 
+$(DESTDIR)/include:
+	mkdir -p $(DESTDIR)/include
+$(DESTDIR_LIB):
+	mkdir -p $(DESTDIR_LIB)
+
 .PHONY: install_static
-install_static: $(DESTDIR_LIB)/lib$(LIB).a install_create_folders
+install_static: $(DESTDIR_LIB)/lib$(LIB).a $(DESTDIR_LIB)
 $(DESTDIR_LIB)/lib$(LIB).a: $(build_dir)/lib$(LIB).a
 	############################################################
 	######## Installing static library to $(DESTDIR_LIB)... ####
@@ -102,7 +107,7 @@ $(DESTDIR_LIB)/lib$(LIB).a: $(build_dir)/lib$(LIB).a
 	######## Done ##############################################
 
 .PHONY: install_shared
-install_shared: $(DESTDIR_LIB)/lib$(LIB).so install_create_folders
+install_shared: $(DESTDIR_LIB)/lib$(LIB).so $(DESTDIR_LIB)
 $(DESTDIR_LIB)/lib$(LIB).so: $(build_dir)/lib$(LIB).so
 	############################################################
 	######## Installing shared library to $(DESTDIR_LIB)... ####
@@ -112,7 +117,7 @@ $(DESTDIR_LIB)/lib$(LIB).so: $(build_dir)/lib$(LIB).so
 
 .PHONY: install_headers install_headers_print install_headers_print_done
 ifeq ($(wildcard $(INSTALLED_HEADERS)),)
-install_headers_print: install_create_folders
+install_headers_print: $(DESTDIR)/include
 	############################################################
 	######## Installing library headers to $(DESTDIR_INC)... ###
 install_headers_print_done:
@@ -123,13 +128,8 @@ install_headers_print:
 install_headers_print_done:
 endif
 install_headers: install_headers_print $(INSTALLED_HEADERS) install_headers_print_done
-$(DESTDIR)/include/%.$(HEADEXT): $(HEADERS_NOTESTING)
+$(DESTDIR)/include/%.$(HEADEXT): $(HEADERS_NOTESTING) $(DESTDIR)/include
 	$(SUDO) $(INSTALL) $< $@
-
-install_create_folders:
-ifneq (,$(filter $(host), $(HPCVL_MACHINES) ))
-	$(SUDO) mkdir -p $(DESTDIR_LIB)
-endif
 
 .PHONY: uninstall
 uninstall: force
