@@ -5,6 +5,12 @@
 #include "StdCout.hpp"
 #include "Version.hpp"
 
+#ifdef COMPRESS_OUTPUT
+#include <zlib.h>
+#define DEFAULT_BUFFER_SIZE 8192
+#endif // #ifdef COMPRESS_OUTPUT
+
+
 File_And_Screen_Stream std_cout;
 FILE *logfile;
 
@@ -72,6 +78,8 @@ File_And_Screen_Stream::File_And_Screen_Stream(void)
 {
     // Clear the string
     memset(string_to_log, 0, 1000*sizeof(char));
+    filepointer   = NULL;
+    compressed_fh = NULL;
 }
 
 // **************************************************************
@@ -88,6 +96,12 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
     if (filepointer != NULL)
         fclose(filepointer);
     filepointer = NULL;
+
+#ifdef COMPRESS_OUTPUT
+    if (compressed_fh != NULL)
+        gzclose((gzFile *) compressed_fh);
+    compressed_fh = NULL;
+#endif // #ifdef COMPRESS_OUTPUT
 }
 
 // **************************************************************
@@ -107,12 +121,22 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
  * Open file.
  */
 {
+#ifdef COMPRESS_OUTPUT
+    filename += ".gz";
+#endif // #ifdef COMPRESS_OUTPUT
+
     std::cout << "Opening file " << filename << "...\n" << std::flush;
+#ifdef COMPRESS_OUTPUT
+    gzFile tmp_file = gzopen(filename.c_str(), "wb");
+    gzbuffer(tmp_file, DEFAULT_BUFFER_SIZE);
+    compressed_fh = (void *) tmp_file;
+#else // #ifdef COMPRESS_OUTPUT
     if (append)
         filestream.open(filename.c_str(), std::ios_base::app);
     else
         filestream.open(filename.c_str(), std::ios_base::out);
     assert(filestream.is_open());
+#endif // #ifdef COMPRESS_OUTPUT
 
     filepointer = fopen(filename.c_str(), "wa");
     assert(filepointer != NULL);

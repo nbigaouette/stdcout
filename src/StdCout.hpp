@@ -23,6 +23,7 @@ class File_And_Screen_Stream
     public:
         std::ofstream filestream;
         FILE         *filepointer;
+        void         *compressed_fh;
         char          string_to_log[1000];
 
          File_And_Screen_Stream(void);
