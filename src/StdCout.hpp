@@ -22,7 +22,6 @@ class File_And_Screen_Stream
 {
     public:
         std::ofstream filestream;
-        FILE         *filepointer;
         char          string_to_log[1000];
 
         void         *logfile_fh;
