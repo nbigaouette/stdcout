@@ -124,7 +124,14 @@ File_And_Screen_Stream & File_And_Screen_Stream::operator<<(std::ostream& (*pfun
  * This allow sending "std::endl" to the stream.
  */
 {
+#ifdef COMPRESS_OUTPUT
+    std::string newline("\n");
+    const int error_code = gzwrite(compressed_fh, newline.c_str(), newline.size());
+    assert(error_code != 0);
+    gzflush(compressed_fh, Z_FINISH);
+#else // #ifdef COMPRESS_OUTPUT
     pfun(filestream);
+#endif // #ifdef COMPRESS_OUTPUT
     pfun(std::cout);
     return *this;
 }
