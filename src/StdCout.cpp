@@ -105,6 +105,19 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
 }
 
 // **************************************************************
+void File_And_Screen_Stream::Save(const std::string string_to_save)
+{
+#ifdef COMPRESS_OUTPUT
+    const int error_code = gzwrite(compressed_fh, string_to_save.c_str(), string_to_save.size());
+    assert(error_code != 0);
+    gzflush(compressed_fh, Z_FINISH);
+#else // #ifdef COMPRESS_OUTPUT
+    filestream << string_to_save;
+#endif // #ifdef COMPRESS_OUTPUTt);
+    std::cout << string_to_save;
+}
+
+// **************************************************************
 File_And_Screen_Stream & File_And_Screen_Stream::operator<<(std::ostream& (*pfun)(std::ostream&))
 /**
  * This allow sending "std::endl" to the stream.
