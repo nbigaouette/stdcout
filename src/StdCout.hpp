@@ -23,14 +23,16 @@ class File_And_Screen_Stream
     public:
         std::ofstream filestream;
         FILE         *filepointer;
-        void         *compressed_fh;
         char          string_to_log[1000];
+
+        void         *compressed_fh;
+        std::stringstream compressed_stream;
 
          File_And_Screen_Stream(void);
         ~File_And_Screen_Stream(void);
 
         File_And_Screen_Stream & operator<<(std::ostream& (*pfun)(std::ostream&));
-        void Save(const std::string string_to_save);
+        void Save_To_File();
 
         void open(std::string filename, const bool append = false);
 
@@ -49,11 +51,11 @@ extern File_And_Screen_Stream std_cout;
 template <class T>
 File_And_Screen_Stream & operator<<(File_And_Screen_Stream& st, const T val)
 {
-    // Create a string out of the templated value
-    std::stringstream stream;
-    stream << val;
-    // Save and output the string content
-    std_cout.Save(stream.str());
+    st.filestream << val;
+    std::cout     << val;
+    std_cout.compressed_stream << val;
+
+    std_cout.Save_To_File();
 
     return st;
 }
