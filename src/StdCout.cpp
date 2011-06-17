@@ -215,10 +215,44 @@ void File_And_Screen_Stream::Clear_Format()
     std::cout  << std::noshowpos;
     filestream << std::noshowpos;
 
-    std::cout  << std::setfill(' ');
-    filestream << std::setfill(' ');
+// **************************************************************
+template <class T>
+void Format_Stream(T &stream, const int width,
+                              const int nb_after_dot,
+                              const char type,
+                              const char justify,
+                              const char fill)
+{
+    if (width != 0)
+    {
+        stream << std::setw(width);
+    }
 
+    if (type != 'd')
+    {
+        // If not an integer, set the precision.
+        stream << std::setprecision(nb_after_dot);
 
+        if (type == 'f')
+        {
+            stream << std::fixed;
+        }
+        else if (type == 'e')
+        {
+            stream << std::scientific;
+        }
+    }
+    if (justify == 'r')
+    {
+        stream << std::right;
+    } else if (justify == '+')
+    {
+        stream << std::showpos;
+    } else if (justify == 'l' || justify == '-')
+    {
+        stream << std::left;
+    }
+    stream << std::setfill(fill);
 }
 
 // **************************************************************
@@ -247,44 +281,8 @@ void File_And_Screen_Stream::Format(const int width,
 {
     Clear_Format();
 
-    if (width != 0)
-    {
-        std::cout  << std::setw(width);
-        filestream << std::setw(width);
-    }
-
-    if (type != 'd')
-    {
-        // If not an integer, set the precision.
-        std::cout  << std::setprecision(nb_after_dot);
-        filestream << std::setprecision(nb_after_dot);
-
-        if (type == 'f')
-        {
-            std::cout  << std::fixed;
-            filestream << std::fixed;
-        }
-        else if (type == 'e')
-        {
-            std::cout  << std::scientific;
-            filestream << std::scientific;
-        }
-    }
-    if (justify == 'r')
-    {
-        std::cout  << std::right;
-        filestream << std::right;
-    } else if (justify == '+')
-    {
-        std::cout  << std::showpos;
-        filestream << std::showpos;
-    } else if (justify == 'l' || justify == '-')
-    {
-        std::cout  << std::left;
-        filestream << std::left;
-    }
-    std::cout  << std::setfill(fill);
-    filestream << std::setfill(fill);
+    Format_Stream(std::cout,         width, nb_after_dot, type, justify, fill);
+    Format_Stream(filestream,        width, nb_after_dot, type, justify, fill);
 }
 
 // ********** End of file ***************************************
