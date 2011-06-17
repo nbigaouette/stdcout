@@ -193,27 +193,21 @@ void File_And_Screen_Stream::Flush()
 }
 
 // **************************************************************
+template <class T>
+void Clear_Stream_Format(T &stream)
+{
+    stream << std::resetiosflags(std::ios_base::floatfield);
+    stream << std::right;
+    stream << std::noshowpos;
+    stream << std::setfill(' ');
+}
+
+// **************************************************************
 void File_And_Screen_Stream::Clear_Format()
 {
-//     std::cout  << std::resetiosflags(std::ios_base::width);
-//     filestream << std::resetiosflags(std::ios_base::width);
-
-    //std::cout  << std::resetiosflags(std::ios::precision);
-//     std::cout.unsetf(std::ios_base::precision);
-//     filestream << std::resetiosflags(std::ios_base::precision);
-
-//     std::cout  << std::resetiosflags(); // Fixed? Scientific?
-//     filestream << std::resetiosflags();
-//     std::cout.floatfield = none;
-//     filestream.floatfield = none;
-    std::cout  << std::resetiosflags(std::ios_base::floatfield);
-    filestream << std::resetiosflags(std::ios_base::floatfield);
-
-    std::cout  << std::right;
-    filestream << std::right;
-
-    std::cout  << std::noshowpos;
-    filestream << std::noshowpos;
+    Clear_Stream_Format(std::cout);
+    Clear_Stream_Format(filestream);
+}
 
 // **************************************************************
 template <class T>
