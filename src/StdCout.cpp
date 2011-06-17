@@ -109,8 +109,9 @@ void File_And_Screen_Stream::Save(const std::string string_to_save)
 {
 #ifdef COMPRESS_OUTPUT
     const int error_code = gzwrite(compressed_fh, string_to_save.c_str(), string_to_save.size());
-    assert(error_code != 0);
     gzflush(compressed_fh, Z_FINISH);
+    if (string_to_save.size() != 0)
+        assert(error_code != 0);
 #else // #ifdef COMPRESS_OUTPUT
     filestream << string_to_save;
 #endif // #ifdef COMPRESS_OUTPUTt);
