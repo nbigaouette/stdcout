@@ -26,7 +26,7 @@ class File_And_Screen_Stream
         char          string_to_log[1000];
 
         void         *compressed_fh;
-        std::stringstream compressed_stream;
+        std::stringstream logfile_stream;
 
          File_And_Screen_Stream(void);
         ~File_And_Screen_Stream(void);
@@ -53,7 +53,7 @@ File_And_Screen_Stream & operator<<(File_And_Screen_Stream& st, const T val)
 {
     st.filestream << val;
     std::cout     << val;
-    std_cout.compressed_stream << val;
+    std_cout.logfile_stream << val;
 
     std_cout.Save_To_File();
 

@@ -108,13 +108,13 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
 void File_And_Screen_Stream::Save_To_File()
 {
 #ifdef COMPRESS_OUTPUT
-    const int error_code = gzwrite(compressed_fh, compressed_stream.str().c_str(), compressed_stream.str().size());
+    const int error_code = gzwrite(compressed_fh, logfile_stream.str().c_str(), logfile_stream.str().size());
     gzflush(compressed_fh, Z_FINISH);
-    if (compressed_stream.str().size() != 0)
+    if (logfile_stream.str().size() != 0)
         assert(error_code != 0);
-    compressed_stream.str(std::string());
+    logfile_stream.str(std::string());
 #else // #ifdef COMPRESS_OUTPUT
-    filestream << compressed_stream.str();
+    filestream << logfile_stream.str();
 #endif // #ifdef COMPRESS_OUTPUTt);
 }
 
@@ -126,7 +126,7 @@ File_And_Screen_Stream & File_And_Screen_Stream::operator<<(std::ostream& (*pfun
 {
     pfun(filestream);
     pfun(std::cout);
-    pfun(compressed_stream);
+    pfun(logfile_stream);
 
     return *this;
 }
@@ -203,7 +203,7 @@ void File_And_Screen_Stream::Clear_Format()
 {
     Clear_Stream_Format(std::cout);
     Clear_Stream_Format(filestream);
-    Clear_Stream_Format(compressed_stream);
+    Clear_Stream_Format(logfile_stream);
 }
 
 // **************************************************************
@@ -274,7 +274,7 @@ void File_And_Screen_Stream::Format(const int width,
 
     Format_Stream(std::cout,         width, nb_after_dot, type, justify, fill);
     Format_Stream(filestream,        width, nb_after_dot, type, justify, fill);
-    Format_Stream(compressed_stream, width, nb_after_dot, type, justify, fill);
+    Format_Stream(logfile_stream, width, nb_after_dot, type, justify, fill);
 }
 
 // ********** End of file ***************************************
