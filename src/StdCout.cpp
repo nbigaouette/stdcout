@@ -149,6 +149,7 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
     std::cout << "Opening file " << filename << "...\n" << std::flush;
 #ifdef COMPRESS_OUTPUT
     gzFile tmp_file = gzopen(filename.c_str(), "wb");
+    assert(tmp_file != NULL);
     gzbuffer(tmp_file, DEFAULT_BUFFER_SIZE);
     compressed_fh = (void *) tmp_file;
 #else // #ifdef COMPRESS_OUTPUT
