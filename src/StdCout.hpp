@@ -47,14 +47,15 @@ class File_And_Screen_Stream
 
 extern File_And_Screen_Stream std_cout;
 
+// **************************************************************
 template <class T>
 File_And_Screen_Stream & operator<<(File_And_Screen_Stream& st, const T val)
 {
-    st.filestream << val;
-    std::cout     << val;
-    std_cout.logfile_stream << val;
+    st.filestream       << val;
+    std::cout           << val;
+    st.logfile_stream   << val;
 
-    std_cout.Save_To_File();
+    st.Save_To_File();
 
     return st;
 }
