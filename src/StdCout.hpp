@@ -25,7 +25,7 @@ class File_And_Screen_Stream
         FILE         *filepointer;
         char          string_to_log[1000];
 
-        void         *compressed_fh;
+        void         *logfile_fh;
         std::stringstream logfile_stream;
 
          File_And_Screen_Stream(void);

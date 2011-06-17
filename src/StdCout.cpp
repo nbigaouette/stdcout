@@ -79,7 +79,7 @@ File_And_Screen_Stream::File_And_Screen_Stream(void)
     // Clear the string
     memset(string_to_log, 0, 1000*sizeof(char));
     filepointer   = NULL;
-    compressed_fh = NULL;
+    logfile_fh = NULL;
 }
 
 // **************************************************************
@@ -98,9 +98,9 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
     filepointer = NULL;
 
 #ifdef COMPRESS_OUTPUT
-    if (compressed_fh != NULL)
-        gzclose((gzFile *) compressed_fh);
-    compressed_fh = NULL;
+    if (logfile_fh != NULL)
+        gzclose((gzFile *) logfile_fh);
+    logfile_fh = NULL;
 #endif // #ifdef COMPRESS_OUTPUT
 }
 
@@ -108,8 +108,8 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
 void File_And_Screen_Stream::Save_To_File()
 {
 #ifdef COMPRESS_OUTPUT
-    const int error_code = gzwrite(compressed_fh, logfile_stream.str().c_str(), logfile_stream.str().size());
-    gzflush(compressed_fh, Z_FINISH);
+    const int error_code = gzwrite(logfile_fh, logfile_stream.str().c_str(), logfile_stream.str().size());
+    gzflush(logfile_fh, Z_FINISH);
     if (logfile_stream.str().size() != 0)
         assert(error_code != 0);
     logfile_stream.str(std::string());
@@ -146,7 +146,7 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
     gzFile tmp_file = gzopen(filename.c_str(), "wb");
     assert(tmp_file != NULL);
     gzbuffer(tmp_file, DEFAULT_BUFFER_SIZE);
-    compressed_fh = (void *) tmp_file;
+    logfile_fh = (void *) tmp_file;
 #else // #ifdef COMPRESS_OUTPUT
     if (append)
         filestream.open(filename.c_str(), std::ios_base::app);
@@ -181,7 +181,7 @@ void File_And_Screen_Stream::Flush()
 {
 
 #ifdef COMPRESS_OUTPUT
-    gzflush(compressed_fh, Z_FINISH);
+    gzflush(logfile_fh, Z_FINISH);
 #else // #ifdef COMPRESS_OUTPUT
     filestream << std::flush;
 #endif // #ifdef COMPRESS_OUTPUT
