@@ -203,6 +203,7 @@ void File_And_Screen_Stream::Clear_Format()
 {
     Clear_Stream_Format(std::cout);
     Clear_Stream_Format(filestream);
+    Clear_Stream_Format(compressed_stream);
 }
 
 // **************************************************************
