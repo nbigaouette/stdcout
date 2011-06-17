@@ -162,7 +162,12 @@ void File_And_Screen_Stream::Flush()
  * Flush both file and screen output.
  */
 {
+
+#ifdef COMPRESS_OUTPUT
+    gzflush(compressed_fh, Z_FINISH);
+#else // #ifdef COMPRESS_OUTPUT
     filestream << std::flush;
+#endif // #ifdef COMPRESS_OUTPUT
     std::cout  << std::flush;
 }
 
