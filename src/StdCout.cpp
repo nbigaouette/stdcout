@@ -274,6 +274,7 @@ void File_And_Screen_Stream::Format(const int width,
 
     Format_Stream(std::cout,         width, nb_after_dot, type, justify, fill);
     Format_Stream(filestream,        width, nb_after_dot, type, justify, fill);
+    Format_Stream(compressed_stream, width, nb_after_dot, type, justify, fill);
 }
 
 // ********** End of file ***************************************
