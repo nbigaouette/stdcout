@@ -26,35 +26,7 @@ void Open_Log_File(std::string filename, const bool append)
     logging(("Opening file "+filename+"...\n").c_str());
 
     Log_Git_Info();
-}
 
-// **************************************************************
-void logging(const char *const format, ...)
-{
-    {
-        va_list args;
-        va_start(args, format);
-        int result = vfprintf(logfile, format, args);
-        if (result < 0)
-        {
-            printf("Couldn't save log! Aborting.\n");
-            abort();
-        }
-        va_end(args);
-    }
-    {
-        va_list args;
-        va_start(args, format);
-        int result = vprintf(format, args);
-        if (result < 0)
-        {
-            printf("Couldn't save log! Aborting.\n");
-            abort();
-        }
-        va_end(args);
-    }
-
-    fflush(logfile);
 }
 
 // **************************************************************

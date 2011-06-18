@@ -15,7 +15,6 @@
 #include <cassert>
 
 void Open_Log_File(std::string filename, const bool append = false);
-void logging(const char *const format, ...);
 void log(const char *const format, ...);
 
 class File_And_Screen_Stream
