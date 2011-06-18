@@ -12,7 +12,6 @@
 
 
 File_And_Screen_Stream std_cout;
-FILE *logfile;
 
 {
 }
