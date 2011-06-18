@@ -20,7 +20,6 @@ class File_And_Screen_Stream
 {
     public:
         std::ofstream filestream;
-        char          string_to_log[1000];
 
         void         *logfile_fh;
         std::stringstream logfile_stream;

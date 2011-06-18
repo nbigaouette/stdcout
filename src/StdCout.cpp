@@ -36,7 +36,6 @@ void log(const char *const format, ...)
 File_And_Screen_Stream::File_And_Screen_Stream(void)
 {
     // Clear the string
-    memset(string_to_log, 0, 1000*sizeof(char));
     logfile_fh = NULL;
 }
 
