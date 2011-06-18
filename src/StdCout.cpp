@@ -72,6 +72,9 @@ void File_And_Screen_Stream::Save_To_File()
 #else // #ifdef COMPRESS_OUTPUT
     Get_Stream(logfile_fh_stream) << logfile_string.str();
 #endif // #ifdef COMPRESS_OUTPUTt);
+
+    // Clear the log stream for next time
+    logfile_string.str(std::string());
 }
 
 // **************************************************************
