@@ -25,14 +25,14 @@ void log(const char *const format, ...)
     va_list args;
     va_start(args, format);
 
-    std_cout.string_to_log[0] = '\0';
-    int result = vsprintf(std_cout.string_to_log, format, args);
+    char string_to_log[2048];
+    int result = vsprintf(string_to_log, format, args);
     if (result < 0)
     {
         std_cout << "Couldn't save log! Aborting.\n" << std::flush;
         abort();
     }
-    std_cout << std_cout.string_to_log;
+    std_cout << string_to_log;
 }
 
 // **************************************************************
