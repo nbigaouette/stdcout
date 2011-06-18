@@ -22,7 +22,7 @@ class File_And_Screen_Stream
         void              *logfile_fh_stream;
         std::ofstream filestream;
 
-        std::stringstream logfile_stream;
+        std::stringstream  logfile_string;
 
          File_And_Screen_Stream(void);
         ~File_And_Screen_Stream(void);
@@ -48,7 +48,7 @@ File_And_Screen_Stream & operator<<(File_And_Screen_Stream& st, const T val)
 {
     st.filestream       << val;
     std::cout           << val;
-    st.logfile_stream   << val;
+    st.logfile_string   << val;
 
     st.Save_To_File();
 
