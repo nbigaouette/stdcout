@@ -14,19 +14,7 @@
 File_And_Screen_Stream std_cout;
 FILE *logfile;
 
-// **************************************************************
-void Open_Log_File(std::string filename, const bool append)
 {
-    if (append)
-        logfile = fopen(filename.c_str(), "wa");
-    else
-        logfile = fopen(filename.c_str(), "w");
-    assert(logfile != NULL);
-
-    logging(("Opening file "+filename+"...\n").c_str());
-
-    Log_Git_Info();
-
 }
 
 // **************************************************************
