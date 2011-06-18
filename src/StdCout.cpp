@@ -50,9 +50,6 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
 {
     Flush();
 
-    if (filestream.is_open())
-        filestream.close();
-
 #ifdef COMPRESS_OUTPUT
     if (logfile_fh_stream != NULL)
         gzclose((gzFile *) logfile_fh_stream);
@@ -83,7 +80,6 @@ File_And_Screen_Stream & File_And_Screen_Stream::operator<<(std::ostream& (*pfun
  * This allow sending "std::endl" to the stream.
  */
 {
-    pfun(filestream);
     pfun(std::cout);
     pfun(logfile_string);
 
@@ -154,7 +150,6 @@ void Clear_Stream_Format(T &stream)
 void File_And_Screen_Stream::Clear_Format()
 {
     Clear_Stream_Format(std::cout);
-    Clear_Stream_Format(filestream);
     Clear_Stream_Format(logfile_string);
 }
 
@@ -225,7 +220,6 @@ void File_And_Screen_Stream::Format(const int width,
     Clear_Format();
 
     Format_Stream(std::cout,         width, nb_after_dot, type, justify, fill);
-    Format_Stream(filestream,        width, nb_after_dot, type, justify, fill);
     Format_Stream(logfile_string, width, nb_after_dot, type, justify, fill);
 }
 
