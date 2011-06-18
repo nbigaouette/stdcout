@@ -19,9 +19,9 @@ void log(const char *const format, ...);
 class File_And_Screen_Stream
 {
     public:
+        void              *logfile_fh_stream;
         std::ofstream filestream;
 
-        void         *logfile_fh;
         std::stringstream logfile_stream;
 
          File_And_Screen_Stream(void);

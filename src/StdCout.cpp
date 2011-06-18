@@ -14,9 +14,9 @@
 File_And_Screen_Stream std_cout;
 
 // **************************************************************
-inline std::ofstream & Get_Stream(void *logfile_fh)
+inline std::ofstream & Get_Stream(void *logfile_fh_stream)
 {
-    return (*((std::ofstream *) logfile_fh));
+    return (*((std::ofstream *) logfile_fh_stream));
 }
 
 // **************************************************************
@@ -39,7 +39,7 @@ void log(const char *const format, ...)
 File_And_Screen_Stream::File_And_Screen_Stream(void)
 {
     // Clear the string
-    logfile_fh = NULL;
+    logfile_fh_stream = NULL;
 }
 
 // **************************************************************
@@ -54,9 +54,13 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
         filestream.close();
 
 #ifdef COMPRESS_OUTPUT
-    if (logfile_fh != NULL)
-        gzclose((gzFile *) logfile_fh);
-    logfile_fh = NULL;
+    if (logfile_fh_stream != NULL)
+        gzclose((gzFile *) logfile_fh_stream);
+    logfile_fh_stream = NULL;
+#else
+    if (Get_Stream(logfile_fh_stream).is_open())
+        Get_Stream(logfile_fh_stream).close();
+    delete (std::ofstream *) logfile_fh_stream;
 #endif // #ifdef COMPRESS_OUTPUT
 }
 
@@ -64,13 +68,12 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
 void File_And_Screen_Stream::Save_To_File()
 {
 #ifdef COMPRESS_OUTPUT
-    const int error_code = gzwrite(logfile_fh, logfile_stream.str().c_str(), logfile_stream.str().size());
-    gzflush(logfile_fh, Z_FINISH);
-    if (logfile_stream.str().size() != 0)
+    const int error_code = gzwrite(logfile_fh_stream, logfile_string.str().c_str(), logfile_string.str().size());
+    gzflush(logfile_fh_stream, Z_FINISH);
+    if (logfile_string.str().size() != 0)
         assert(error_code != 0);
-    logfile_stream.str(std::string());
 #else // #ifdef COMPRESS_OUTPUT
-    filestream << logfile_stream.str();
+    Get_Stream(logfile_fh_stream) << logfile_string.str();
 #endif // #ifdef COMPRESS_OUTPUTt);
 }
 
@@ -102,16 +105,22 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
     gzFile tmp_file = gzopen(filename.c_str(), "wb");
     assert(tmp_file != NULL);
     gzbuffer(tmp_file, DEFAULT_BUFFER_SIZE);
-    logfile_fh = (void *) tmp_file;
+    logfile_fh_stream = (void *) tmp_file;
 #else // #ifdef COMPRESS_OUTPUT
+    logfile_fh_stream = (void *) new std::ofstream;
+    assert(logfile_fh_stream != NULL);
     if (append)
-        filestream.open(filename.c_str(), std::ios_base::app);
+    {
+        Get_Stream(logfile_fh_stream).open(filename.c_str(), std::ios_base::app);
+    }
     else
-        filestream.open(filename.c_str(), std::ios_base::out);
-    assert(filestream.is_open());
-#endif // #ifdef COMPRESS_OUTPUT
+    {
+        Get_Stream(logfile_fh_stream).open(filename.c_str(), std::ios_base::out);
+    }
+    assert(Get_Stream(logfile_fh_stream).is_open());
 
-    filestream << "Opening file " << filename << "...\n" << std::flush;
+    Get_Stream(logfile_fh_stream) << "Opening file " << filename << "...\n" << std::flush;
+#endif // #ifdef COMPRESS_OUTPUT
 
     Log_Git_Info();
 }
@@ -124,9 +133,9 @@ void File_And_Screen_Stream::Flush()
 {
 
 #ifdef COMPRESS_OUTPUT
-    gzflush(logfile_fh, Z_FINISH);
+    gzflush(logfile_fh_stream, Z_FINISH);
 #else // #ifdef COMPRESS_OUTPUT
-    filestream << std::flush;
+    Get_Stream(logfile_fh_stream) << std::flush;
 #endif // #ifdef COMPRESS_OUTPUT
     std::cout  << std::flush;
 }
