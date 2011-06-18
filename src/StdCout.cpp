@@ -156,16 +156,6 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
 }
 
 // **************************************************************
-std::streamsize File_And_Screen_Stream::precision(const std::streamsize p)
-/**
- * Set precision of stream.
- */
-{
-    filestream.precision(p);
-    return std::cout.precision(p);
-}
-
-// **************************************************************
 void File_And_Screen_Stream::Flush()
 /**
  * Flush both file and screen output.
