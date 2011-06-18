@@ -105,6 +105,9 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
     assert(tmp_file != NULL);
     gzbuffer(tmp_file, DEFAULT_BUFFER_SIZE);
     logfile_fh_stream = (void *) tmp_file;
+
+    logfile_string   << "Opening file " << filename << "...\n" << std::flush;
+    Save_To_File();
 #else // #ifdef COMPRESS_OUTPUT
     logfile_fh_stream = (void *) new std::ofstream;
     assert(logfile_fh_stream != NULL);
