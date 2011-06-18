@@ -13,7 +13,10 @@
 
 File_And_Screen_Stream std_cout;
 
+// **************************************************************
+inline std::ofstream & Get_Stream(void *logfile_fh)
 {
+    return (*((std::ofstream *) logfile_fh));
 }
 
 // **************************************************************
