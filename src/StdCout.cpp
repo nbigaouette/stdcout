@@ -68,7 +68,6 @@ void File_And_Screen_Stream::Save_To_File()
     {
 #ifdef COMPRESS_OUTPUT
         const int error_code = gzwrite(logfile_fh_stream, logfile_string.str().c_str(), (unsigned int) logfile_string.str().size());
-        gzflush(logfile_fh_stream, Z_FINISH);
         if (logfile_string.str().size() != 0)
             assert(error_code != 0);
 #else // #ifdef COMPRESS_OUTPUT
