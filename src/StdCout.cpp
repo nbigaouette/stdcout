@@ -38,7 +38,6 @@ void log(const char *const format, ...)
 // **************************************************************
 File_And_Screen_Stream::File_And_Screen_Stream(void)
 {
-    // Clear the string
     logfile_fh_stream = NULL;
 }
 
