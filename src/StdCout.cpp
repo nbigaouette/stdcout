@@ -7,7 +7,8 @@
 
 #ifdef COMPRESS_OUTPUT
 #include <zlib.h>
-#define DEFAULT_BUFFER_SIZE 8192
+//#define DEFAULT_BUFFER_SIZE 8192
+#define DEFAULT_BUFFER_SIZE 512
 #endif // #ifdef COMPRESS_OUTPUT
 
 
