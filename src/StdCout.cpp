@@ -52,12 +52,13 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
 #ifdef COMPRESS_OUTPUT
     if (logfile_fh_stream != NULL)
         gzclose((gzFile *) logfile_fh_stream);
-    logfile_fh_stream = NULL;
 #else
     if (Get_Stream(logfile_fh_stream).is_open())
         Get_Stream(logfile_fh_stream).close();
     delete (std::ofstream *) logfile_fh_stream;
 #endif // #ifdef COMPRESS_OUTPUT
+
+    logfile_fh_stream = NULL;
 }
 
 // **************************************************************
