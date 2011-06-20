@@ -14,25 +14,21 @@
 // #include "Assert.hpp"
 #include <cassert>
 
-void Open_Log_File(std::string filename, const bool append = false);
-void logging(const char *const format, ...);
 void log(const char *const format, ...);
 
 class File_And_Screen_Stream
 {
     public:
-        std::ofstream filestream;
-        FILE         *filepointer;
-        char          string_to_log[1000];
+        void              *logfile_fh_stream;
+        std::stringstream  logfile_string;
 
          File_And_Screen_Stream(void);
         ~File_And_Screen_Stream(void);
 
         File_And_Screen_Stream & operator<<(std::ostream& (*pfun)(std::ostream&));
+        void Save_To_File();
 
         void open(std::string filename, const bool append = false);
-
-        std::streamsize precision(const std::streamsize p);
 
         void Flush();
 
@@ -44,11 +40,15 @@ class File_And_Screen_Stream
 
 extern File_And_Screen_Stream std_cout;
 
+// **************************************************************
 template <class T>
 File_And_Screen_Stream & operator<<(File_And_Screen_Stream& st, const T val)
 {
-    st.filestream << val;
-    std::cout     << val;
+    std::cout           << val;
+    st.logfile_string   << val;
+
+    st.Save_To_File();
+
     return st;
 }
 
