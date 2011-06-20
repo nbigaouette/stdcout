@@ -37,17 +37,12 @@ LIBZ_OBJ_build = $(addprefix $(build_dir)/libz/, $(notdir $(LIBZ_OBJ)) )
 
 LIB_OBJ += $(LIBZ_OBJ_build)
 
-test2: $(LIBZ_OBJ_build)
-test3:
-	# libz_loc = $(libz_loc)
-	# LIBZ_OBJ = $(LIBZ_OBJ)
-	# LIBZ_OBJ_build = $(LIBZ_OBJ_build)
-
 $(build_dir)/libz :
 	mkdir -p $(build_dir)/libz
 $(build_dir)/libz/%.o : ../libz.git/src/%.o $(build_dir)/libz
 	cp $< $@
 endif
+### End of compression block
 
 # Project is a library. Include the makefile for build and install.
 include makefiles/Makefile.library
