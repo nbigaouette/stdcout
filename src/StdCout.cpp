@@ -64,6 +64,8 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
 // **************************************************************
 void File_And_Screen_Stream::Save_To_File()
 {
+    if (logfile_fh_stream != NULL)
+    {
 #ifdef COMPRESS_OUTPUT
     const int error_code = gzwrite(logfile_fh_stream, logfile_string.str().c_str(), (unsigned int) logfile_string.str().size());
     gzflush(logfile_fh_stream, Z_FINISH);
@@ -72,6 +74,7 @@ void File_And_Screen_Stream::Save_To_File()
 #else // #ifdef COMPRESS_OUTPUT
     Get_Stream(logfile_fh_stream) << logfile_string.str();
 #endif // #ifdef COMPRESS_OUTPUTt);
+    }
 
     // Clear the log stream for next time
     logfile_string.str(std::string());
