@@ -131,6 +131,20 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
 }
 
 // **************************************************************
+std::streamsize File_And_Screen_Stream::precision(const std::streamsize p)
+/**
+ * Set precision of stream.
+ */
+{
+// #ifdef COMPRESS_OUTPUT
+// #else // #ifdef COMPRESS_OUTPUT
+//     Get_Stream(logfile_fh_stream).precision(p);
+// #endif // #ifdef COMPRESS_OUTPUT
+    Format(p+3, p, 'f');
+    return std::cout.precision(p);
+}
+
+// **************************************************************
 void File_And_Screen_Stream::Flush()
 /**
  * Flush both file and screen output.

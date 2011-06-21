@@ -29,7 +29,7 @@ class File_And_Screen_Stream
         void Save_To_File();
 
         void open(std::string filename, const bool append = false);
-
+        std::streamsize precision(const std::streamsize p);
         void Flush();
 
         void Format(const int width, const int nb_after_dot, const char type, const char justify='r', const char fill=' ');
