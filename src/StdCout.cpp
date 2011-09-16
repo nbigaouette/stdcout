@@ -54,9 +54,12 @@ File_And_Screen_Stream::~File_And_Screen_Stream(void)
     if (logfile_fh_stream != NULL)
         gzclose((gzFile *) logfile_fh_stream);
 #else
-    if (Get_Stream(logfile_fh_stream).is_open())
-        Get_Stream(logfile_fh_stream).close();
-    delete (std::ofstream *) logfile_fh_stream;
+    if (logfile_fh_stream != NULL)
+    {
+        if (Get_Stream(logfile_fh_stream).is_open())
+            Get_Stream(logfile_fh_stream).close();
+        delete (std::ofstream *) logfile_fh_stream;
+    }
 #endif // #ifdef COMPRESS_OUTPUT
 
     logfile_fh_stream = NULL;
@@ -151,11 +154,14 @@ void File_And_Screen_Stream::Flush()
  */
 {
 
+    if (logfile_fh_stream != NULL)
+    {
 #ifdef COMPRESS_OUTPUT
-    gzflush(logfile_fh_stream, Z_FINISH);
+        gzflush(logfile_fh_stream, Z_FINISH);
 #else // #ifdef COMPRESS_OUTPUT
-    Get_Stream(logfile_fh_stream) << std::flush;
+        Get_Stream(logfile_fh_stream) << std::flush;
 #endif // #ifdef COMPRESS_OUTPUT
+    }
     std::cout  << std::flush;
 }
 
