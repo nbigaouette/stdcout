@@ -1,22 +1,48 @@
-#ifndef INC_VERSION_hpp
-#define INC_VERSION_hpp
+#ifndef INC_GIT_VERSION_hpp
+#define INC_GIT_VERSION_hpp
 
-extern const char *stdcout_build_time;
-extern const char *stdcout_build_sha;
-extern const char *stdcout_build_branch;
+#include "Git_Diff.hpp"
 
-extern void log(const char *const format, ...);
+extern const char *git_build_time;
+extern const char *git_build_sha;
+extern const char *git_build_branch;
+extern const char *git_log_stat;
 
-#define Log_Git_Info()                                                          \
-{                                                                               \
-    log("##############################################################\n");    \
-    log("# StdCout library git versioning:                            #\n");    \
-    log("#    build_time:   %-41s #\n", stdcout_build_time);                    \
-    log("#    build_sha:    %-41s #\n", stdcout_build_sha);                     \
-    log("#    build_branch: %-41s #\n", stdcout_build_branch);                  \
-    log("##############################################################\n");    \
+#include <string>
+
+inline std::string FixedLength(const char *s)
+{
+    std::string tmp(s);
+    tmp.resize(41, ' ');
+    return tmp;
 }
 
-#endif // INC_VERSION_hpp
+#define StdCout_Log_Git_Info(basename)                                                          \
+{                                                                                               \
+    std::string git_version("##############################################################\n");\
+    git_version +=          "# StdCout Git versioning:                                    #\n"; \
+    git_version +=          "#    build_time:   " + FixedLength(git_build_time)       + " #\n"; \
+    git_version +=          "#    build_sha:    " + FixedLength(git_build_sha)        + " #\n"; \
+    git_version +=          "#    build_branch: " + FixedLength(git_build_branch)     + " #\n"; \
+    git_version +=          "##############################################################\n"; \
+                                                                                                \
+    std_cout << git_version << "\n";                                                            \
+                                                                                                \
+    git_version += git_log_stat;                                                                \
+                                                                                                \
+    std::string filename = basename + "/git_version.log";                                       \
+    std::ofstream git_file;                                                                     \
+    git_file.open(filename.c_str());                                                            \
+    git_file << git_version << "\n";                                                            \
+    git_file.close();                                                                           \
+                                                                                                \
+    std::string gitdiff = reinterpret_cast<const char*>(src_Git_Diff_patch);                    \
+    filename = basename + "/git_diff.patch";                                                    \
+    git_file.open(filename.c_str(), std::fstream::out);                                         \
+    git_file << gitdiff << "\n";                                                                \
+    git_file.close();                                                                           \
+}
+
+#endif // INC_GIT_VERSION_hpp
 
 // ********** End of file ***************************************

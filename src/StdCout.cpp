@@ -130,7 +130,7 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
     Get_Stream(logfile_fh_stream) << "Opening file " << filename << "...\n" << std::flush;
 #endif // #ifdef COMPRESS_OUTPUT
 
-    Log_Git_Info();
+    StdCout_Log_Git_Info();
 }
 
 // **************************************************************

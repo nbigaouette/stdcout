@@ -1,2 +1,3 @@
 stdcout_testing
 src/Version.cpp
+src/Git_Diff.cpp
