@@ -75,7 +75,7 @@ else
     DESTDIR_LIB := $(DESTDIR)/lib/$(DESTDIRCOMPILER)
 endif
 
-HEADERS_NOTESTING=$(filter-out src/Version.hpp, $(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) ) )
+HEADERS_NOTESTING=$(filter-out src/Git_Diff.hpp, $(filter-out src/Version.hpp, $(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) ) ) )
 HEADERS_NOTESTING_NOSRC=$(subst src/,,$(HEADERS_NOTESTING) )
 INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/, $(HEADERS_NOTESTING_NOSRC) )
 ###############################################################
