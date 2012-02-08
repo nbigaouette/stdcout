@@ -1,8 +1,6 @@
 # Don't install these headers
 HEADERS         := $(filter-out src/Git_Info.hpp, $(HEADERS))
 
-LIB_OBJ          = $(filter-out $(build_dir)/Main.o, $(filter-out $(TEST_OBJ), $(OBJ) ) )
-
 # Define the library name
 CFLAGS          += -DLIBNAME=$(LIB)
 
