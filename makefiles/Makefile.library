@@ -1,3 +1,11 @@
+# Don't install these headers
+HEADERS         := $(filter-out src/Git_Info.hpp, $(HEADERS))
+
+LIB_OBJ          = $(filter-out $(build_dir)/Main.o, $(filter-out $(TEST_OBJ), $(OBJ) ) )
+
+# Define the library name
+CFLAGS          += -DLIBNAME=$(LIB)
+
 ### Just build "full" and install
 .PHONY: f full
 f: full
@@ -6,7 +14,7 @@ full: install_shared install_static install_headers force
 .PHONY: shared lib_shared
 shared: lib_shared
 lib_shared: $(build_dir)/lib$(LIB).so
-$(build_dir)/lib$(LIB).so: version $(LIB_OBJ)
+$(build_dir)/lib$(LIB).so: $(LIB_OBJ)
 	############################################################
 	######## Building shared library... ########################
 	#
@@ -16,7 +24,7 @@ $(build_dir)/lib$(LIB).so: version $(LIB_OBJ)
 .PHONY: static lib_static
 static: lib_static
 lib_static: $(build_dir)/lib$(LIB).a
-$(build_dir)/lib$(LIB).a: version $(LIB_OBJ)
+$(build_dir)/lib$(LIB).a: $(LIB_OBJ)
 	############################################################
 	######## Building static library... ########################
 	#
@@ -75,9 +83,10 @@ else
     DESTDIR_LIB := $(DESTDIR)/lib/$(DESTDIRCOMPILER)
 endif
 
-HEADERS_NOTESTING=$(filter-out src/Git_Diff.hpp, $(filter-out src/Version.hpp, $(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) ) ) )
+HEADERS_NOTESTING=$(filter-out src/Version.hpp, $(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) ) )
 HEADERS_NOTESTING_NOSRC=$(subst src/,,$(HEADERS_NOTESTING) )
-INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/, $(HEADERS_NOTESTING_NOSRC) )
+HEADERS_NOTESTING_NOSRC_NOMEM=$(filter-out $(HEADERS_DONT_INSTALL), $(HEADERS_NOTESTING_NOSRC) )
+INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/, $(HEADERS_NOTESTING_NOSRC_NOMEM) )
 ###############################################################
 
 
@@ -128,7 +137,7 @@ install_headers_print:
 install_headers_print_done:
 endif
 install_headers: install_headers_print $(INSTALLED_HEADERS) install_headers_print_done
-$(DESTDIR)/include/%.$(HEADEXT): $(HEADERS_NOTESTING) $(DESTDIR)/include
+$(DESTDIR)/include/%.$(HEADEXT): src/%.$(HEADEXT) $(DESTDIR)/include
 	$(SUDO) $(INSTALL) $< $@
 
 .PHONY: uninstall

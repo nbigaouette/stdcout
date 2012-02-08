@@ -3,7 +3,6 @@
 #include <cstring>
 
 #include "StdCout.hpp"
-#include "Version.hpp"
 
 #ifdef COMPRESS_OUTPUT
 #include <zlib.h>
@@ -133,8 +132,6 @@ void File_And_Screen_Stream::open(std::string filename, const bool append)
 
     Get_Stream(logfile_fh_stream) << "Opening file " << filename << "...\n" << std::flush;
 #endif // #ifdef COMPRESS_OUTPUT
-
-    StdCout_Log_Git_Info();
 }
 
 // **************************************************************

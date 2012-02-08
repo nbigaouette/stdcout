@@ -14,6 +14,12 @@
 // #include "Assert.hpp"
 #include <cassert>
 
+namespace stdcout
+{
+    // See Git_Info.cpp (generated dynamically from Git_Info.cpp_template & Makefile.rules)
+    void Log_Git_Info(std::string basename = "");
+}
+
 void log(const char *const format, ...);
 
 class File_And_Screen_Stream
