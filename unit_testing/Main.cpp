@@ -29,8 +29,6 @@ int main(int argc, char *argv[])
 
     std_cout << "Call to std_cout <<... #2\n" << std::flush;
 
-    Open_Log_File("output/newlog.txt");
-    logging("a = %d\nb = %f  c = %g or %.15g\n", a, b, c, c);
 
 
     return EXIT_SUCCESS;
