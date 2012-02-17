@@ -13,12 +13,14 @@ You will need zlib (at least) version 1.2.5 from http://zlib.net/ if you want
 compression. To disable compression, comment Makefile's line 30.
 
 To build and install:
+
 ``` bash
 $ make gcc shared static install
 ```
 
 By default, it will be installed in ${HOME}/usr. You can install somewhere else
 using DESTDIR:
+
 ``` bash
 $ make gcc shared static install DESTIR=/usr
 ```
@@ -26,6 +28,7 @@ $ make gcc shared static install DESTIR=/usr
 Library name are libstdcout.so and libstdcout.a.
 
 Here's a usage example:
+
 ``` C++
     // Open the file. If compression is enabled, ".gz" will be appended at end of file
     std_cout.open("output/log.txt");
