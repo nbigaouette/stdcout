@@ -51,9 +51,12 @@ template <class T>
 File_And_Screen_Stream & operator<<(File_And_Screen_Stream& st, const T val)
 {
     std::cout           << val;
-    st.logfile_string   << val;
+    if (st.logfile_fh_stream != NULL)
+    {
+        st.logfile_string << val;
 
-    st.Save_To_File();
+        st.Save_To_File();
+    }
 
     return st;
 }

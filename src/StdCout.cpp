@@ -90,7 +90,8 @@ File_And_Screen_Stream & File_And_Screen_Stream::operator<<(std::ostream& (*pfun
  */
 {
     pfun(std::cout);
-    pfun(logfile_string);
+    if (logfile_fh_stream != NULL)
+        pfun(logfile_string);
 
     return *this;
 }
@@ -182,7 +183,8 @@ void Clear_Stream_Format(T &stream)
 void File_And_Screen_Stream::Clear_Format()
 {
     Clear_Stream_Format(std::cout);
-    Clear_Stream_Format(logfile_string);
+    if (logfile_fh_stream != NULL)
+        Clear_Stream_Format(logfile_string);
 }
 
 // **************************************************************
@@ -252,7 +254,8 @@ void File_And_Screen_Stream::Format(const int width,
     Clear_Format();
 
     Format_Stream(std::cout,         width, nb_after_dot, type, justify, fill);
-    Format_Stream(logfile_string, width, nb_after_dot, type, justify, fill);
+    if (logfile_fh_stream != NULL)
+        Format_Stream(logfile_string, width, nb_after_dot, type, justify, fill);
 }
 
 // ********** End of file ***************************************
