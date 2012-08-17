@@ -51,8 +51,11 @@ ifneq ($(filter optimized, $(MAKECMDGOALS) ),)
     # Link-time optimization. Needs GCC v4.5.1 and up
     GCC_GT_451  := $(shell [ $(GCC_MAJOR) -gt 4 -o \( $(GCC_MAJOR) -eq 4 -a $(GCC_MINOR) -ge 5 -a $(GCC_REV) -ge 1 \) ] && echo true )
     ifeq ($(GCC_GT_451),true)
-        CFLAGS  += -flto
-        LDFLAGS += -flto
+        # Even for gcc > 4.5.1, LTO might not have been enabled
+        ifeq ($(shell LANG=C gcc -v 2>&1 | grep "Configured with" | sed "s|.*--\([a-z]*\)-lto.*|\1|g"),enable)
+            CFLAGS  += -flto
+            LDFLAGS += -flto
+        endif
     endif
     ifneq ($(os), Darwin)
         CFLAGS  += -march=native
