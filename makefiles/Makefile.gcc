@@ -30,6 +30,7 @@ endif
 # CFLAGS          += -Weffc++
 CFLAGS          += -Wno-unused-parameter # Disable: "warning: unused parameter [...]"
 CFLAGS          += -Wno-unknown-pragmas
+CFLAGS          += -Werror=return-type
 # See http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/c-cpp.html
 # CFLAGS          += -Wpointer-arith -O2
 ifeq (C, $(LANGUAGE))
@@ -46,7 +47,9 @@ OMP_LDFLAGS      = -fopenmp
 #################################################################
 # Call "make optimized" for optimized compilation
 ifneq ($(filter optimized, $(MAKECMDGOALS) ),)
-    CFLAGS      := -O3 -Wno-write-strings -fvisibility-inlines-hidden -DNDEBUG
+    CFLAGS      := -O3 -Wno-write-strings -march=native -DNDEBUG
+    # Needed for fast dSFMT pseudo-random number generator
+    CFLAGS      += -msse2 -DHAVE_SSE2
     CFLAGS      += -ftree-vectorizer-verbose=1
     # Link-time optimization. Needs GCC v4.5.1 and up
     GCC_GT_451  := $(shell [ $(GCC_MAJOR) -gt 4 -o \( $(GCC_MAJOR) -eq 4 -a $(GCC_MINOR) -ge 5 -a $(GCC_REV) -ge 1 \) ] && echo true )
