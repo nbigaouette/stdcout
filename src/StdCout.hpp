@@ -96,6 +96,15 @@ std::string FormattedInteger(T value, std::string format)
     return formatted_string;
 }
 
+// **************************************************************
+inline std::string YesNo(const bool test)
+{
+    if (test)
+        return "yes";
+    else
+        return "no";
+}
+
 // http://www.codeproject.com/KB/stl/ostringstream.aspx
 #define leftprec(x,y) (x - (((int)floor(x) - (((int)floor(x))% ((int)(pow(10,y)))))))
 
